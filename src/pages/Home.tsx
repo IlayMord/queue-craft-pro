@@ -40,7 +40,7 @@ const stats = [
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header userType="user" userName="יוסי לוי" />
       
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
