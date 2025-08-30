@@ -12,6 +12,7 @@ import Notifications from "./pages/Notifications";
 import BusinessSettings from "./pages/BusinessSettings";
 import BusinessReports from "./pages/BusinessReports";
 import NotFound from "./pages/NotFound";
+import { ScrollToTop } from "@/components/ui/scroll-to-top";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <ScrollToTop />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

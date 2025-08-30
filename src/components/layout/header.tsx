@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Calendar, UserCircle, LogOut } from "lucide-react";
 import { Navigation } from "@/components/ui/navigation";
+import { Link } from "react-router-dom";
 
 interface HeaderProps {
   userType?: "user" | "business";
@@ -40,9 +41,11 @@ export function Header({ userType, userName, businessName }: HeaderProps) {
                   {userType === "business" ? "מנהל עסק" : "לקוח"}
                 </span>
               </div>
-              <Button variant="ghost" size="sm" className="gap-2">
-                <UserCircle className="h-4 w-4" />
-                <span className="hidden sm:inline">פרופיל</span>
+              <Button variant="ghost" size="sm" className="gap-2" asChild>
+                <Link to="/profile">
+                  <UserCircle className="h-4 w-4" />
+                  <span className="hidden sm:inline">פרופיל</span>
+                </Link>
               </Button>
               <Button variant="ghost" size="sm" className="gap-2 text-destructive hover:text-destructive">
                 <LogOut className="h-4 w-4" />
