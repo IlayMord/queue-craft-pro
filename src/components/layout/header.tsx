@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Calendar, UserCircle, LogOut } from "lucide-react";
 import { Navigation } from "@/components/ui/navigation";
+import { LoginDialog } from "@/components/auth/login-dialog";
 
 interface HeaderProps {
   userType?: "user" | "business";
@@ -51,9 +52,7 @@ export function Header({ userType, userName, businessName }: HeaderProps) {
             </>
           ) : (
             <>
-              <Button variant="ghost" size="sm">
-                התחבר
-              </Button>
+              <LoginDialog />
               <Button size="sm" className="bg-gradient-primary hover:opacity-90">
                 הרשם
               </Button>
