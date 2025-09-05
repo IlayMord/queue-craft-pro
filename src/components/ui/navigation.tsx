@@ -26,7 +26,10 @@ export function Navigation({ type }: NavigationProps) {
   const navItems = type === "user" ? userNavItems : businessNavItems;
 
   return (
-    <nav className="flex items-center gap-2">
+    <nav
+      className="flex items-center gap-2"
+      aria-label={type === "user" ? "ניווט משתמש" : "ניווט עסק"}
+    >
       {navItems.map(({ to, icon: Icon, label }) => {
         const isActive = location.pathname === to;
         return (
@@ -40,7 +43,7 @@ export function Navigation({ type }: NavigationProps) {
             )}
             asChild
           >
-            <Link to={to}>
+            <Link to={to} aria-current={isActive ? "page" : undefined}>
               <Icon className="h-4 w-4" />
               <span className="hidden md:inline">{label}</span>
             </Link>

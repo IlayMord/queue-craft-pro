@@ -20,7 +20,7 @@ export function Header({ userType, userName, businessName }: HeaderProps) {
             <Calendar className="h-6 w-6 text-white" />
           </div>
           <div className="flex flex-col">
-            <h1 className="text-xl font-bold text-foreground">QueuePro</h1>
+              <h1 className="text-xl font-bold text-foreground">TORIM</h1>
             <p className="text-xs text-muted-foreground hidden sm:block">ניהול תורים חכם</p>
           </div>
         </div>
