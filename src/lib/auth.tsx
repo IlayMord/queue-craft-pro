@@ -17,6 +17,9 @@ interface AuthContextValue {
   loginWithEmail: (email: string, password: string) => Promise<void>;
   loginWithPhone: (phone: string) => Promise<void>;
   loginWithGmail: () => Promise<void>;
+  registerWithEmail: (email: string, password: string) => Promise<void>;
+  registerWithPhone: (phone: string) => Promise<void>;
+  registerWithGmail: () => Promise<void>;
   updateUser: (updates: Partial<User>) => Promise<void>;
   logout: () => void;
 }
@@ -76,6 +79,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(u);
   };
 
+  const registerWithEmail = async (email: string, password: string) => {
+    const res = await fetch(`${API_URL}/register/email`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!res.ok) throw new Error("האימייל כבר רשום");
+    const u: User = await res.json();
+    localStorage.setItem("currentUser", u.id);
+    setUser(u);
+  };
+
+  const registerWithPhone = async (phone: string) => {
+    const res = await fetch(`${API_URL}/register/phone`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone }),
+    });
+    if (!res.ok) throw new Error("המספר כבר רשום");
+    const u: User = await res.json();
+    localStorage.setItem("currentUser", u.id);
+    setUser(u);
+  };
+
+  const registerWithGmail = async () => {
+    const res = await fetch(`${API_URL}/register/gmail`, { method: "POST" });
+    if (!res.ok) throw new Error("שגיאה בהרשמה");
+    const u: User = await res.json();
+    localStorage.setItem("currentUser", u.id);
+    setUser(u);
+  };
+
   const updateUser = async (updates: Partial<User>) => {
     if (!user) return;
     const res = await fetch(`${API_URL}/users/${user.id}`, {
@@ -95,7 +130,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, loginWithEmail, loginWithPhone, loginWithGmail, updateUser, logout }}
+      value={{
+        user,
+        loginWithEmail,
+        loginWithPhone,
+        loginWithGmail,
+        registerWithEmail,
+        registerWithPhone,
+        registerWithGmail,
+        updateUser,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

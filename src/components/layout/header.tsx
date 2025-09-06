@@ -3,6 +3,7 @@ import { Calendar, LogOut } from "lucide-react";
 import { ProfileDialog } from "@/components/auth/profile-dialog";
 import { Navigation } from "@/components/ui/navigation";
 import { LoginDialog } from "@/components/auth/login-dialog";
+import { RegisterDialog } from "@/components/auth/register-dialog";
 import { useAuth } from "@/lib/auth";
 
 interface HeaderProps {
@@ -60,9 +61,7 @@ export function Header({ userType, userName, businessName }: HeaderProps) {
           ) : (
             <>
               <LoginDialog />
-              <Button size="sm" className="bg-gradient-primary hover:opacity-90">
-                הרשם
-              </Button>
+              <RegisterDialog />
             </>
           )}
         </div>

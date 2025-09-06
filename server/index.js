@@ -53,6 +53,40 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.post('/register/email', async (req, res) => {
+  const { email, password } = req.body;
+  let users = await readUsers();
+  if (users.find(u => u.email === email && u.provider === 'email')) {
+    return res.status(409).json({ error: 'User already exists' });
+  }
+  const user = { id: uuidv4(), provider: 'email', email, password };
+  users.push(user);
+  await writeUsers(users);
+  await sendWelcomeEmail(email);
+  res.json(user);
+});
+
+app.post('/register/phone', async (req, res) => {
+  const { phone } = req.body;
+  let users = await readUsers();
+  if (users.find(u => u.phone === phone && u.provider === 'phone')) {
+    return res.status(409).json({ error: 'User already exists' });
+  }
+  const user = { id: uuidv4(), provider: 'phone', phone };
+  users.push(user);
+  await writeUsers(users);
+  res.json(user);
+});
+
+app.post('/register/gmail', async (_req, res) => {
+  let users = await readUsers();
+  const user = { id: uuidv4(), provider: 'gmail', email: 'gmailUser@example.com' };
+  users.push(user);
+  await writeUsers(users);
+  await sendWelcomeEmail(user.email);
+  res.json(user);
+});
+
 app.post('/auth/email', async (req, res) => {
   const { email, password } = req.body;
   let users = await readUsers();

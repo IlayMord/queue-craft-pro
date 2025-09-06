@@ -13,16 +13,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/lib/auth";
 
-export function LoginDialog() {
+export function RegisterDialog() {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
   const [phone, setPhone] = useState("");
-  const { loginWithEmail, loginWithPhone, loginWithGmail } = useAuth();
+  const { registerWithEmail, registerWithPhone, registerWithGmail } = useAuth();
 
-  const handleEmailLogin = async () => {
+  const handleEmailRegister = async () => {
+    if (password !== confirm) {
+      alert("הסיסמאות אינן תואמות");
+      return;
+    }
     try {
-      await loginWithEmail(email, password);
+      await registerWithEmail(email, password);
       setOpen(false);
     } catch (e) {
       if (e instanceof Error) {
@@ -31,9 +36,9 @@ export function LoginDialog() {
     }
   };
 
-  const handlePhoneLogin = async () => {
+  const handlePhoneRegister = async () => {
     try {
-      await loginWithPhone(phone);
+      await registerWithPhone(phone);
       setOpen(false);
     } catch (e) {
       if (e instanceof Error) {
@@ -42,9 +47,9 @@ export function LoginDialog() {
     }
   };
 
-  const handleGmailLogin = async () => {
+  const handleGmailRegister = async () => {
     try {
-      await loginWithGmail();
+      await registerWithGmail();
       setOpen(false);
     } catch (e) {
       if (e instanceof Error) {
@@ -56,15 +61,15 @@ export function LoginDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="sm">
-          התחבר
+        <Button size="sm" className="bg-gradient-primary hover:opacity-90">
+          הרשם
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>התחברות</DialogTitle>
+          <DialogTitle>הרשמה</DialogTitle>
           <DialogDescription>
-            בחרי שיטת התחברות להמשך.
+            צרי חשבון חדש בעזרת אימייל, טלפון או Gmail.
           </DialogDescription>
         </DialogHeader>
         <Tabs defaultValue="email" className="w-full">
@@ -75,9 +80,9 @@ export function LoginDialog() {
           </TabsList>
           <TabsContent value="email" className="space-y-4 pt-4">
             <div className="space-y-2">
-              <Label htmlFor="login-email">אימייל</Label>
+              <Label htmlFor="register-email">אימייל</Label>
               <Input
-                id="login-email"
+                id="register-email"
                 type="email"
                 placeholder="name@example.com"
                 value={email}
@@ -85,27 +90,37 @@ export function LoginDialog() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="login-password">סיסמה</Label>
+              <Label htmlFor="register-password">סיסמה</Label>
               <Input
-                id="login-password"
+                id="register-password"
                 type="password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="register-confirm">אימות סיסמה</Label>
+              <Input
+                id="register-confirm"
+                type="password"
+                placeholder="••••••••"
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
+              />
+            </div>
             <Button
               className="w-full bg-gradient-primary hover:opacity-90"
-              onClick={handleEmailLogin}
+              onClick={handleEmailRegister}
             >
-              התחבר
+              הרשם
             </Button>
           </TabsContent>
           <TabsContent value="phone" className="space-y-4 pt-4">
             <div className="space-y-2">
-              <Label htmlFor="login-phone">מספר טלפון</Label>
+              <Label htmlFor="register-phone">מספר טלפון</Label>
               <Input
-                id="login-phone"
+                id="register-phone"
                 type="tel"
                 placeholder="050-123-4567"
                 value={phone}
@@ -114,18 +129,18 @@ export function LoginDialog() {
             </div>
             <Button
               className="w-full bg-gradient-primary hover:opacity-90"
-              onClick={handlePhoneLogin}
+              onClick={handlePhoneRegister}
             >
-              שלח קוד
+              הרשם
             </Button>
           </TabsContent>
           <TabsContent value="gmail" className="pt-4">
             <Button
               variant="outline"
               className="w-full"
-              onClick={handleGmailLogin}
+              onClick={handleGmailRegister}
             >
-              התחבר עם Gmail
+              הירשם עם Gmail
             </Button>
           </TabsContent>
         </Tabs>
