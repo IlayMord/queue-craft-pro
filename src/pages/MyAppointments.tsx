@@ -3,6 +3,7 @@ import { Header } from "@/components/layout/header";
 import { AppointmentCard } from "@/components/ui/appointment-card";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar, Clock, CheckCircle, X } from "lucide-react";
 
@@ -178,8 +179,8 @@ export default function MyAppointments() {
                     <p className="text-muted-foreground mb-6">
                       נראה שאין לך תורים מתוכננים. מה דעתך לתזמן תור חדש?
                     </p>
-                    <Button className="bg-gradient-primary hover:opacity-90">
-                      חפש עסקים
+                    <Button className="bg-gradient-primary hover:opacity-90" asChild>
+                      <Link to="/search">חפש עסקים</Link>
                     </Button>
                   </CardContent>
                 </Card>
@@ -225,11 +226,11 @@ export default function MyAppointments() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button className="w-full bg-gradient-primary hover:opacity-90">
-                תזמן תור חדש
+              <Button className="w-full bg-gradient-primary hover:opacity-90" asChild>
+                <Link to="/search">תזמן תור חדש</Link>
               </Button>
-              <Button variant="outline" className="w-full">
-                הגדרות התראות
+              <Button variant="outline" className="w-full" asChild>
+                <Link to="/notifications">הגדרות התראות</Link>
               </Button>
             </CardContent>
           </Card>

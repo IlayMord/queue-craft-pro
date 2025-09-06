@@ -11,6 +11,10 @@ import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 import BusinessSettings from "./pages/BusinessSettings";
 import BusinessReports from "./pages/BusinessReports";
+import BusinessAppointments from "./pages/BusinessAppointments";
+import BusinessSchedule from "./pages/BusinessSchedule";
+import BusinessCustomers from "./pages/BusinessCustomers";
+import MapPage from "./pages/Map";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,7 +28,11 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/search" element={<SearchBusinesses />} />
+          <Route path="/map" element={<MapPage />} />
           <Route path="/business" element={<BusinessDashboard />} />
+          <Route path="/business/appointments" element={<BusinessAppointments />} />
+          <Route path="/business/schedule" element={<BusinessSchedule />} />
+          <Route path="/business/customers" element={<BusinessCustomers />} />
           <Route path="/my-appointments" element={<MyAppointments />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/notifications" element={<Notifications />} />

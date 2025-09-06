@@ -3,6 +3,7 @@ import { StatsCard } from "@/components/ui/stats-card";
 import { AppointmentCard } from "@/components/ui/appointment-card";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { Calendar, Users, Clock, TrendingUp, Plus, Settings } from "lucide-react";
 
 // Mock data - in real app this would come from a database
@@ -84,13 +85,17 @@ export default function BusinessDashboard() {
             </p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" className="gap-2">
-              <Settings className="h-4 w-4" />
-              הגדרות
+            <Button variant="outline" className="gap-2" asChild>
+              <Link to="/business/settings">
+                <Settings className="h-4 w-4" />
+                הגדרות
+              </Link>
             </Button>
-            <Button className="gap-2 bg-gradient-primary hover:opacity-90">
-              <Plus className="h-4 w-4" />
-              תור חדש
+            <Button className="gap-2 bg-gradient-primary hover:opacity-90" asChild>
+              <Link to="/business/appointments">
+                <Plus className="h-4 w-4" />
+                תור חדש
+              </Link>
             </Button>
           </div>
         </div>
@@ -120,8 +125,8 @@ export default function BusinessDashboard() {
                       {mockTodayAppointments.length} תורים מתוכננים
                     </CardDescription>
                   </div>
-                  <Button size="sm" variant="outline">
-                    הצג הכל
+                  <Button size="sm" variant="outline" asChild>
+                    <Link to="/business/appointments">הצג הכל</Link>
                   </Button>
                 </div>
               </CardHeader>
@@ -158,21 +163,29 @@ export default function BusinessDashboard() {
                 <CardTitle>פעולות מהירות</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button className="w-full justify-start gap-2" variant="outline">
-                  <Calendar className="h-4 w-4" />
-                  עריכת לוח זמנים
+                <Button className="w-full justify-start gap-2" variant="outline" asChild>
+                  <Link to="/business/schedule">
+                    <Calendar className="h-4 w-4" />
+                    עריכת לוח זמנים
+                  </Link>
                 </Button>
-                <Button className="w-full justify-start gap-2" variant="outline">
-                  <Users className="h-4 w-4" />
-                  ניהול לקוחות
+                <Button className="w-full justify-start gap-2" variant="outline" asChild>
+                  <Link to="/business/customers">
+                    <Users className="h-4 w-4" />
+                    ניהול לקוחות
+                  </Link>
                 </Button>
-                <Button className="w-full justify-start gap-2" variant="outline">
-                  <Settings className="h-4 w-4" />
-                  הגדרות עסק
+                <Button className="w-full justify-start gap-2" variant="outline" asChild>
+                  <Link to="/business/settings">
+                    <Settings className="h-4 w-4" />
+                    הגדרות עסק
+                  </Link>
                 </Button>
-                <Button className="w-full justify-start gap-2" variant="outline">
-                  <TrendingUp className="h-4 w-4" />
-                  דוחות
+                <Button className="w-full justify-start gap-2" variant="outline" asChild>
+                  <Link to="/business/reports">
+                    <TrendingUp className="h-4 w-4" />
+                    דוחות
+                  </Link>
                 </Button>
               </CardContent>
             </Card>

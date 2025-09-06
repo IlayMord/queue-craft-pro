@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BusinessCard } from "@/components/ui/business-card";
 import { Search, MapPin, Filter } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 // Mock data - in real app this would come from a database
 const mockBusinesses = [
@@ -122,9 +122,11 @@ export default function SearchBusinesses() {
             </Select>
 
             {/* Location Filter */}
-            <Button variant="outline" className="gap-2">
-              <MapPin className="h-4 w-4" />
-              מיקום
+            <Button variant="outline" className="gap-2" asChild>
+              <Link to="/map">
+                <MapPin className="h-4 w-4" />
+                מיקום
+              </Link>
             </Button>
           </div>
 

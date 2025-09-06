@@ -45,6 +45,13 @@ export default function Profile({ userType = "user" }: ProfileProps) {
   const [isEditing, setIsEditing] = useState(false);
   const { toast } = useToast();
 
+  const handlePreferenceClick = (label: string) => {
+    toast({
+      title: "הגדרה עודכנה",
+      description: `${label} נשמר`,
+    });
+  };
+
   const handleSave = () => {
     setIsEditing(false);
     toast({
@@ -316,19 +323,43 @@ export default function Profile({ userType = "user" }: ProfileProps) {
                 <CardContent className="space-y-4">
                   <div className="flex items-center justify-between">
                     <Label>התראות דחופות</Label>
-                    <Button variant="outline" size="sm">הפעל</Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handlePreferenceClick("התראות דחופות")}
+                    >
+                      הפעל
+                    </Button>
                   </div>
                   <div className="flex items-center justify-between">
                     <Label>התראות תזכורת</Label>
-                    <Button variant="outline" size="sm">הפעל</Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handlePreferenceClick("התראות תזכורת")}
+                    >
+                      הפעל
+                    </Button>
                   </div>
                   <div className="flex items-center justify-between">
                     <Label>שיתוף מיקום</Label>
-                    <Button variant="outline" size="sm">אפשר</Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handlePreferenceClick("שיתוף מיקום")}
+                    >
+                      אפשר
+                    </Button>
                   </div>
                   <div className="flex items-center justify-between">
                     <Label>מצב כהה</Label>
-                    <Button variant="outline" size="sm">אוטומטי</Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handlePreferenceClick("מצב כהה")}
+                    >
+                      אוטומטי
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
