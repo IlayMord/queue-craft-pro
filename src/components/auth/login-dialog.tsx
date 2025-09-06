@@ -20,9 +20,9 @@ export function LoginDialog() {
   const [phone, setPhone] = useState("");
   const { loginWithEmail, loginWithPhone, loginWithGmail } = useAuth();
 
-  const handleEmailLogin = () => {
+  const handleEmailLogin = async () => {
     try {
-      loginWithEmail(email, password);
+      await loginWithEmail(email, password);
       setOpen(false);
     } catch (e) {
       if (e instanceof Error) {
@@ -31,13 +31,13 @@ export function LoginDialog() {
     }
   };
 
-  const handlePhoneLogin = () => {
-    loginWithPhone(phone);
+  const handlePhoneLogin = async () => {
+    await loginWithPhone(phone);
     setOpen(false);
   };
 
-  const handleGmailLogin = () => {
-    loginWithGmail();
+  const handleGmailLogin = async () => {
+    await loginWithGmail();
     setOpen(false);
   };
 

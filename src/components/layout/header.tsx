@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Calendar, UserCircle, LogOut } from "lucide-react";
+import { Calendar, LogOut } from "lucide-react";
+import { ProfileDialog } from "@/components/auth/profile-dialog";
 import { Navigation } from "@/components/ui/navigation";
 import { LoginDialog } from "@/components/auth/login-dialog";
 import { useAuth } from "@/lib/auth";
@@ -45,10 +46,7 @@ export function Header({ userType, userName, businessName }: HeaderProps) {
                   </span>
                 )}
               </div>
-              <Button variant="ghost" size="sm" className="gap-2">
-                <UserCircle className="h-4 w-4" />
-                <span className="hidden sm:inline">פרופיל</span>
-              </Button>
+              <ProfileDialog />
               <Button
                 variant="ghost"
                 size="sm"

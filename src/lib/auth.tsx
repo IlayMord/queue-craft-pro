@@ -6,98 +6,96 @@ export type User = {
   phone?: string;
   provider: "email" | "phone" | "gmail";
   password?: string;
+  firstName?: string;
+  lastName?: string;
+  username?: string;
+  avatar?: string;
 };
 
 interface AuthContextValue {
   user: User | null;
-  loginWithEmail: (email: string, password: string) => void;
-  loginWithPhone: (phone: string) => void;
-  loginWithGmail: () => void;
+  loginWithEmail: (email: string, password: string) => Promise<void>;
+  loginWithPhone: (phone: string) => Promise<void>;
+  loginWithGmail: () => Promise<void>;
+  updateUser: (updates: Partial<User>) => Promise<void>;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+const API_URL = "http://localhost:3001";
 
-function loadUsers(): Record<string, User> {
+async function fetchUser(id: string): Promise<User | null> {
   try {
-    return JSON.parse(localStorage.getItem("users") || "{}");
+    const res = await fetch(`${API_URL}/users/${id}`);
+    if (!res.ok) return null;
+    return await res.json();
   } catch {
-    return {};
+    return null;
   }
 }
 
-function saveUsers(users: Record<string, User>) {
-  localStorage.setItem("users", JSON.stringify(users));
-}
-
-function loadCurrentUser(): User | null {
-  const users = loadUsers();
-  const id = localStorage.getItem("currentUser");
-  return id ? users[id] || null : null;
-}
-
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(() => loadCurrentUser());
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    if (user) {
-      localStorage.setItem("currentUser", user.id);
-    } else {
-      localStorage.removeItem("currentUser");
+    const id = localStorage.getItem("currentUser");
+    if (id) {
+      fetchUser(id).then((u) => setUser(u));
     }
-  }, [user]);
+  }, []);
 
-  const loginWithEmail = (email: string, password: string) => {
-    const users = loadUsers();
-    const id = `email:${email}`;
-    const existing = users[id];
-    if (existing) {
-      if (existing.password !== password) {
-        throw new Error("סיסמה שגויה");
-      }
-      setUser(existing);
-      return;
-    }
-    const newUser: User = { id, provider: "email", email, password };
-    users[id] = newUser;
-    saveUsers(users);
-    setUser(newUser);
+  const loginWithEmail = async (email: string, password: string) => {
+    const res = await fetch(`${API_URL}/auth/email`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!res.ok) throw new Error("שגיאה בחיבור");
+    const u: User = await res.json();
+    localStorage.setItem("currentUser", u.id);
+    setUser(u);
   };
 
-  const loginWithPhone = (phone: string) => {
-    const users = loadUsers();
-    const id = `phone:${phone}`;
-    const existing = users[id];
-    if (existing) {
-      setUser(existing);
-      return;
-    }
-    const newUser: User = { id, provider: "phone", phone };
-    users[id] = newUser;
-    saveUsers(users);
-    setUser(newUser);
+  const loginWithPhone = async (phone: string) => {
+    const res = await fetch(`${API_URL}/auth/phone`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone }),
+    });
+    if (!res.ok) throw new Error("שגיאה בחיבור");
+    const u: User = await res.json();
+    localStorage.setItem("currentUser", u.id);
+    setUser(u);
   };
 
-  const loginWithGmail = () => {
-    const id = `gmail:${Date.now()}`;
-    const users = loadUsers();
-    const newUser: User = {
-      id,
-      provider: "gmail",
-      email: "gmailUser@example.com",
-    };
-    users[id] = newUser;
-    saveUsers(users);
-    setUser(newUser);
+  const loginWithGmail = async () => {
+    const res = await fetch(`${API_URL}/auth/gmail`, { method: "POST" });
+    if (!res.ok) throw new Error("שגיאה בחיבור");
+    const u: User = await res.json();
+    localStorage.setItem("currentUser", u.id);
+    setUser(u);
+  };
+
+  const updateUser = async (updates: Partial<User>) => {
+    if (!user) return;
+    const res = await fetch(`${API_URL}/users/${user.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updates),
+    });
+    if (!res.ok) throw new Error("שגיאה בעדכון");
+    const u: User = await res.json();
+    setUser(u);
   };
 
   const logout = () => {
+    localStorage.removeItem("currentUser");
     setUser(null);
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, loginWithEmail, loginWithPhone, loginWithGmail, logout }}
+      value={{ user, loginWithEmail, loginWithPhone, loginWithGmail, updateUser, logout }}
     >
       {children}
     </AuthContext.Provider>
@@ -111,4 +109,3 @@ export function useAuth() {
   }
   return ctx;
 }
-
