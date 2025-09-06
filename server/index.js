@@ -4,6 +4,7 @@ import { promises as fs } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import nodemailer from 'nodemailer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,6 +23,32 @@ async function writeUsers(users) {
   await fs.writeFile(DATA_FILE, JSON.stringify(users, null, 2));
 }
 
+async function sendWelcomeEmail(to) {
+  try {
+    const account = await nodemailer.createTestAccount();
+    const transporter = nodemailer.createTransport({
+      host: account.smtp.host,
+      port: account.smtp.port,
+      secure: account.smtp.secure,
+      auth: {
+        user: account.user,
+        pass: account.pass,
+      },
+    });
+
+    const info = await transporter.sendMail({
+      from: 'TORIM <no-reply@torim.app>',
+      to,
+      subject: 'ברוך הבא לTORIM',
+      text: 'ברוך הבא לאפליקציה TORIM',
+    });
+
+    console.log('Welcome email sent:', nodemailer.getTestMessageUrl(info));
+  } catch (err) {
+    console.error('Failed to send welcome email', err);
+  }
+}
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -38,6 +65,7 @@ app.post('/auth/email', async (req, res) => {
     user = { id: uuidv4(), provider: 'email', email, password };
     users.push(user);
     await writeUsers(users);
+    await sendWelcomeEmail(email);
   }
   res.json(user);
 });
@@ -59,6 +87,7 @@ app.post('/auth/gmail', async (_req, res) => {
   const user = { id: uuidv4(), provider: 'gmail', email: 'gmailUser@example.com' };
   users.push(user);
   await writeUsers(users);
+  await sendWelcomeEmail(user.email);
   res.json(user);
 });
 
