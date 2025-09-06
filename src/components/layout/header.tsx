@@ -21,8 +21,8 @@ export function Header({ userType, userName, businessName }: HeaderProps) {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center justify-center w-10 h-10 bg-gradient-primary rounded-lg">
-            <Calendar className="h-6 w-6 text-white" />
+          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary">
+            <Calendar className="h-6 w-6 text-primary-foreground" />
           </div>
           <div className="flex flex-col">
               <h1 className="text-xl font-bold text-foreground">TORIM</h1>
